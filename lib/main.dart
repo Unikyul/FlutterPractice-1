@@ -22,17 +22,12 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //위에 appvar 넣기
       appBar: AppBar(
         actions: [
           Icon(Icons.search),
-          Icon(
-            CupertinoIcons.heart,
-            color: Colors.redAccent,
-          ),
-          SizedBox(
-            width: 16,
-          )
+          SizedBox(width: 16),
+          Icon(CupertinoIcons.heart, color: Colors.redAccent),
+          SizedBox(width: 16)
         ],
       ),
       body: Padding(
@@ -40,24 +35,19 @@ class HomePage extends StatelessWidget {
         child: ListView(
           children: [
             _title(),
-            SizedBox(height: 20),
-            _Menu(),
-            SizedBox(height: 20),
-            Container(
-              height: 300,
-              color: Colors.red,
-            ),
-            Placeholder(),
-            Container(
-              height: 300,
-              color: Colors.red,
-            ),
+            SizedBox(height: 10),
+            _menu(),
+            SizedBox(height: 10),
+            RecipeItem("burger.jpeg", "burger"),
+            RecipeItem("coffee.jpeg", "coffee"),
+            RecipeItem("pizza.jpeg", "pizza"),
           ],
         ),
       ),
     );
   }
 
+//제목
   Text _title() {
     return Text(
       "Recipes",
@@ -67,9 +57,10 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Row _Menu() {
+  //메뉴
+
+  Row _menu() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         //_하면 다른 곳에서 쓰지 못한다. 우리가 만든 메소드는 m을 붙이자
         //재사용 가능한 메소드, 처음부터 만들고 메소드를 만든다.
@@ -83,6 +74,8 @@ class HomePage extends StatelessWidget {
       ],
     );
   }
+
+  //아이콘
 
   Container _mIcon(IconData mIcon, String text) {
     return Container(
@@ -102,10 +95,53 @@ class HomePage extends StatelessWidget {
             size: 30,
           ),
           SizedBox(height: 5),
-          //글자 스타일 꾸미는 방법
-          Text("$text",
-              style: TextStyle(
-                  color: Colors.black87, fontWeight: FontWeight.bold)),
+          Text(
+            "$text",
+            style: TextStyle(
+              color: Colors.black87,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+//RecipeItem 컬럼
+class RecipeItem extends StatelessWidget {
+  //이렇게 쓰는 방법은 const만 지우면 가능하다.
+  String imageName;
+  String text;
+
+  //생성자 , new를 백번해도 한번만 뜬다. 상태가 없으면 const를 지운다.
+  // const  RecipeItem();
+  RecipeItem(this.imageName, this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AspectRatio(
+            //가로가 2 세로가 1
+            aspectRatio: 3 / 2,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.asset("assets/$imageName", fit: BoxFit.cover),
+            ),
+          ),
+          SizedBox(height: 10),
+          Text(
+            "$text",
+            style: TextStyle(fontSize: 20),
+          ),
+          Text(
+            "Have you ever made your own $text? Once you've tried a homemade $text, you'll never go back.",
+            style: TextStyle(color: Colors.grey, fontSize: 12),
+          ),
         ],
       ),
     );
